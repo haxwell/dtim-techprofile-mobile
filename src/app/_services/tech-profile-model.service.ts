@@ -16,7 +16,7 @@ export class TechProfileModelService {
 
 
 	_init(force?: boolean) {
-		let self = this;
+		const self = this;
 
 		if (force || self.techProfile === undefined) {
 			self.techProfile = null;
@@ -24,29 +24,29 @@ export class TechProfileModelService {
 
 			self._techProfileAPI.get(1).then((tp) => {
 				self.techProfile = tp;
-			})
+			});
 		}
 	}
 
 	waitingPromise() {
-		let self = this;
-		return new Promise((resolve, reject) => {
+		const self = this;
+		return new Promise<void>((resolve, reject) => {
 
-			function to() {
+      const to = () => {
 				setTimeout(() => {
 					if (self.isTechProfileAvailable())
-						resolve();
+						{resolve();}
 					else
-						to();
+						{to();}
 				}, 600);
-			}
+			};
 
 			to();
-		})
+		});
 	}
 
 	isTechProfileAvailable() {
-		return this.techProfile && this.techProfile != null
+		return this.techProfile && this.techProfile != null;
 	}
 
 	setTechProfile(techProfile) {
@@ -58,156 +58,156 @@ export class TechProfileModelService {
 	}
 
 	getTechProfileTopics() {
-		return this.techProfile["topics"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
+		return this.techProfile.topics.sort((a, b) => a.sequence - b.sequence);
 	}
 
 	getTechProfileTopicById(topicId) {
-		return this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		return this.techProfile.topics.find((t) => t.id === topicId);
 	}
 
 	isTopicAbleToMoveUp(id) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === id });
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === id);
 
 		if (topic)
-			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, -1);
+			{return this._sequenceService.isAbleToMove(this.techProfile.topics, topic, -1);}
 
 		return false;
 	}
 
 	isTopicAbleToMoveDown(id) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === id });
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === id);
 
 		if (topic)
-			return this._sequenceService.isAbleToMove(this.techProfile["topics"], topic, 1);
+			{return this._sequenceService.isAbleToMove(this.techProfile.topics, topic, 1);}
 
 		return false;
 	}
 
 	moveSequenceForTechProfileTopic(topicId, direcionPlusOrMinus) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === topicId);
 
 		if (topic)
-			return this._sequenceService.moveSequenceByOne(this.techProfile["topics"], topic, direcionPlusOrMinus);
+			{return this._sequenceService.moveSequenceByOne(this.techProfile.topics, topic, direcionPlusOrMinus);}
 		else
-			console.error("Topic with ID " + topicId + " not found. Nothing to move.");
+			{console.error('Topic with ID ' + topicId + ' not found. Nothing to move.');}
 	}
 
 	isLineItemAbleToMoveUp(topicId, id) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === topicId);
 
-		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
+		const lineItem = topic && topic.lineItems && topic.lineItems.find((li) => li.id === id);
 
 		if (lineItem)
-			return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, -1);
+			{return this._sequenceService.isAbleToMove(topic.lineItems, lineItem, -1);}
 
 		return false;
 	}
 
 	isLineItemAbleToMoveDown(topicId, id) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === topicId);
 
-		let lineItem = topic && topic["lineItems"] && topic["lineItems"].find((li) => { return li['id'] === id });
+		const lineItem = topic && topic.lineItems && topic.lineItems.find((li) => li.id === id);
 
-		if (lineItem) 
-			return this._sequenceService.isAbleToMove(topic["lineItems"], lineItem, 1)
+		if (lineItem)
+			{return this._sequenceService.isAbleToMove(topic.lineItems, lineItem, 1);}
 
 		return false;
 	}
 
 	moveSequenceForTechProfileLineItem(topicId, lineItemId, direcionPlusOrMinus) {
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t['id'] === topicId });
-		let lineItem = topic && topic["lineItems"].find((li) => { return li['id'] === lineItemId });
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === topicId);
+		const lineItem = topic && topic.lineItems.find((li) => li.id === lineItemId);
 
 		if (lineItem)
-			return this._sequenceService.moveSequenceByOne(topic["lineItems"], lineItem, direcionPlusOrMinus);
+			{return this._sequenceService.moveSequenceByOne(topic.lineItems, lineItem, direcionPlusOrMinus);}
 		else
-			console.error("LineItem with ID " + lineItemId + " not found. Nothing to move.");
+			{console.error('LineItem with ID ' + lineItemId + ' not found. Nothing to move.');}
 	}
 
 	saveSequenceInfo() {
 		return new Promise((resolve, reject) => {
-			let arr1 = [];
+			const arr1 = [];
 
-			this.techProfile['topics'].forEach((topic) => {
-				let arr = [];
+			this.techProfile.topics.forEach((topic) => {
+				const arr = [];
 
-				topic['lineItems'].forEach((lineItem) => {
-					let row = []
-					row.push(1) // techProfileId
-					row.push(topic['id'])
-					row.push(topic['sequence'])
+				topic.lineItems.forEach((lineItem) => {
+					const row = [];
+					row.push(1); // techProfileId
+					row.push(topic.id);
+					row.push(topic.sequence);
 
-					row.push(lineItem['id'])
-					row.push(lineItem['sequence'])
+					row.push(lineItem.id);
+					row.push(lineItem.sequence);
 
 					arr.push(row);
-				})
+				});
 
 				arr1.push(arr);
-			})
+			});
 
-			console.log("saveSequenceInfo")
-			console.log(arr1)
+			console.log('saveSequenceInfo');
+			console.log(arr1);
 
 			this._techProfileAPI.saveSequenceInfo(arr1).then((data) => {
 				resolve(data);
 			}, (err) => {
 				reject(err);
-			})
-		})
+			});
+		});
 	}
 
 	getTechProfileLineItemsByTopic(topicId) {
-		let rtn = undefined;
-		let topic = this.techProfile && this.techProfile["topics"].find((t) => { return t["id"] === topicId; });
+		let rtn;
+		const topic = this.techProfile && this.techProfile.topics.find((t) => t.id === topicId);
 
 		if (topic) {
-			rtn = topic["lineItems"].sort((a, b) => { return a["sequence"] - b["sequence"]; });
+			rtn = topic.lineItems.sort((a, b) => a.sequence - b.sequence);
 		}
 
 		return rtn;
 	}
 
 	getTechProfileLineItemById(id) {
-		let rtn = undefined;
+		let rtn;
 
-		for (var x=0; this.techProfile && !rtn && x < this.techProfile["topics"].length; x++) {
-			rtn = this.techProfile["topics"][x]["lineItems"].find((li) => { return li["id"] === id; });
+		for (let x=0; this.techProfile && !rtn && x < this.techProfile.topics.length; x++) {
+			rtn = this.techProfile.topics[x].lineItems.find((li) => li.id === id);
 		}
 
 		return rtn;
 	}
 
 	updateTechProfileTopic(topic) {
-		let self = this;
+		const self = this;
 		if (topic.id !== -1) {
 			return self._techProfileAPI.updateTopic(topic).then(() => self._init(true));
 		} else {
-			console.error("A topic with no backend id was passed to updateTechProfileTopic.");
+			console.error('A topic with no backend id was passed to updateTechProfileTopic.');
 		}
 	}
 
 	updateTechProfileLineItem(lineItem) {
-		let self = this;
+		const self = this;
 		if (lineItem.id !== -1) {
 			return self._techProfileAPI.updateLineItemWithDescriptions(lineItem).then(() => self._init(true));
 		} else {
-			console.error("A lineItem with no backend id was passed to updateTechProfileLineItem.");
+			console.error('A lineItem with no backend id was passed to updateTechProfileLineItem.');
 		}
 	}
 
 	addTopic(name) {
-		let self = this;
+		const self = this;
 		self._techProfileAPI.addTopic(name).then(() => {
 			self._init(true);
-		})
+		});
 	}
 
 	addLineItem(parentTopicId, lineItemName) {
-		let self = this;
+		const self = this;
 		self._techProfileAPI.addLineItem(parentTopicId, lineItemName).then(() => {
 			self._init(true);
-		})
+		});
 	}
 
 }

@@ -2,11 +2,11 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { FunctionPromiseService } from 'savvato-javascript-services'
+import { FunctionPromiseService } from 'savvato-javascript-services';
 import { AlertService } from '../_services/alert.service';
 import { TechProfileModelService } from '../_services/tech-profile-model.service';
 
-import { environment } from '../../_environments/environment'
+import { environment } from '../../_environments/environment';
 
 @Component({
 	selector: 'app-tech-profile-edit',
@@ -15,7 +15,15 @@ import { environment } from '../../_environments/environment'
 })
 export class TechProfileEditPage implements OnInit {
 
-	constructor(private _location: Location,
+  selectedTopicIDs = [];
+  selectedLineItemIDs = [];
+  allowMultiSelect = false;
+
+  funcKey = 'tpepg-controller';
+
+  _techProfile = undefined;
+
+  constructor(private _location: Location,
 		private _router: Router,
 		private _route: ActivatedRoute,
 		private _techProfileModelService: TechProfileModelService,
@@ -24,24 +32,14 @@ export class TechProfileEditPage implements OnInit {
 
 	}
 
-	selectedTopicIDs = [];
-	selectedLineItemIDs = [];
-	allowMultiSelect = false;
-
-	funcKey = "tpepg-controller";
-
-	_techProfile = undefined;
-	selectedTopicIDsProvider = () => { return [] };
-	selectedLineItemIDsProvider = () => { return [] };
+  selectedTopicIDsProvider = () => [];
+  selectedLineItemIDsProvider = () => [];
 
 	ngOnInit() {
-		let self = this;
-		self._functionPromiseService.initFunc(self.funcKey, () => {
-			return new Promise((resolve, reject) => {
+		const self = this;
+		self._functionPromiseService.initFunc(self.funcKey, () => new Promise((resolve, reject) => {
 				resolve({
-					getEnv: () => {
-						return environment;
-					},
+					getEnv: () => environment,
 					initTechProfile: (techProfile) => {
 						self._techProfileModelService.setTechProfile(techProfile);
 					},
@@ -53,18 +51,11 @@ export class TechProfileEditPage implements OnInit {
 						// called by the techprofile component to give us a function
 						self.selectedLineItemIDsProvider = func;
 					},
-					getColorMeaningString: () => {
-						return "Red means selected. Selected means you can edit it!"
-					},
-					getTopicBackgroundColor: (topic, isSelected) => {
-						return isSelected ? "red" : undefined;
-					},
-					getLineItemBackgroundColor: (lineItem, isSelected) => {
-						return isSelected ? "red" : undefined;
-					},
+					getColorMeaningString: () => 'Red means selected. Selected means you can edit it!',
+					getTopicBackgroundColor: (topic, isSelected) => isSelected ? 'red' : undefined,
+					getLineItemBackgroundColor: (lineItem, isSelected) => isSelected ? 'red' : undefined,
 				});
-			})
-		});
+			}));
 	}
 
 	getDtimTechprofileComponentController() {
@@ -72,22 +63,22 @@ export class TechProfileEditPage implements OnInit {
 	};
 
 	onNewTopicBtnClicked() {
-		let self = this;
+		const self = this;
 		self._alertService.show({
 			header: 'New Topic!',
-			message: "Enter the new topic name:",
+			message: 'Enter the new topic name:',
 			inputs: [{
 				name: 'topicName',
 				placeholder: '....',
 				type: 'text'
-			}],			
+			}],
 			buttons: [{
-				text: 'Cancel', 
+				text: 'Cancel',
 				handler: (data) => {
 					// do nothing.. ?
 				}
 			},{
-				text: 'OK', 
+				text: 'OK',
 				handler: (data) => {
 					if (data.topicName && data.topicName.length >= 2) {
 						self._techProfileModelService.addTopic(data.topicName);
@@ -97,30 +88,30 @@ export class TechProfileEditPage implements OnInit {
 				}
 			}
 			]
-		})
+		});
 	}
 
 	isNewLineItemBtnAvailable() {
-		return this.selectedTopicIDsProvider().length > 0
+		return this.selectedTopicIDsProvider().length > 0;
 	}
 
 	onNewLineItemBtnClicked() {
-		let self = this;
+		const self = this;
 		self._alertService.show({
 			header: 'New Line Item!',
-			message: "Enter the new Line Item name:",
+			message: 'Enter the new Line Item name:',
 			inputs: [{
 				name: 'lineItemName',
 				placeholder: '....',
 				type: 'text'
-			}],			
+			}],
 			buttons: [{
-				text: 'Cancel', 
+				text: 'Cancel',
 				handler: (data) => {
 					// do nothing.. ?
 				}
 			},{
-				text: 'OK', 
+				text: 'OK',
 				handler: (data) => {
 					if (data.lineItemName && data.lineItemName.length >= 2) {
 						self._techProfileModelService.addLineItem(self.selectedTopicIDs[0], data.lineItemName);
@@ -130,7 +121,7 @@ export class TechProfileEditPage implements OnInit {
 				}
 			}
 			]
-		})
+		});
 	}
 
 	isSelectedTopicAbleToMoveUp() {
@@ -138,7 +129,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveTopicUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], -1)
+		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], -1);
 	}
 
 	isSelectedTopicAbleToMoveDown() {
@@ -146,7 +137,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveTopicDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], 1)
+		this._techProfileModelService.moveSequenceForTechProfileTopic(this.selectedTopicIDsProvider()[0], 1);
 	}
 
 	isSelectedLineItemAbleToMoveUp() {
@@ -154,7 +145,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveLineItemUpClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], -1)	
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], -1);
 	}
 
 	isSelectedLineItemAbleToMoveDown() {
@@ -162,7 +153,7 @@ export class TechProfileEditPage implements OnInit {
 	}
 
 	onMoveLineItemDownClicked() {
-		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], 1)
+		this._techProfileModelService.moveSequenceForTechProfileLineItem(this.selectedTopicIDsProvider()[0], this.selectedLineItemIDsProvider()[0], 1);
 	}
 
 	isEditTopicBtnAvailable() {
@@ -184,6 +175,6 @@ export class TechProfileEditPage implements OnInit {
 	onBackBtnClicked() {
 		this._techProfileModelService.saveSequenceInfo().then((data) => {
 			this._location.back();
-		})
+		});
 	}
 }

@@ -10,41 +10,41 @@ import { AttendanceModelService } from '../_services/attendance-model.service';
 })
 export class HomePage {
 
-	showAdminBtn = false;
-	bannerClickCount = 0;
+  showAdminBtn = false;
+  bannerClickCount = 0;
 
-	constructor(private _router: Router,
-  				private _attendanceModelService: AttendanceModelService) {
+  constructor(private _router: Router,
+              private _attendanceModelService: AttendanceModelService) {
 
-	}
+  }
 
-	onNewUserBtnClicked() {
-		this._router.navigate(['/new-user']);
-	}
+  onNewUserBtnClicked() {
+    this._router.navigate(['/new-user']);
+  }
 
-	onReturningUserBtnClicked() {
-		this._router.navigate(['/returning-user']);
-	}
+  onReturningUserBtnClicked() {
+    this._router.navigate(['/returning-user']);
+  }
 
-	onAdminBtnClicked() {
-		this.showAdminBtn = false;
-		this._router.navigate(['/admin']);
-	}
+  onAdminBtnClicked() {
+    this.showAdminBtn = false;
+    this._router.navigate(['/admin']);
+  }
 
-	isSessionActive() {
-		return this._attendanceModelService.isSessionActive();
-	}
+  isSessionActive() {
+    return this._attendanceModelService.isSessionActive();
+  }
 
-	onBannerClick() {
-		this.bannerClickCount++;
+  onBannerClick() {
+    this.bannerClickCount++;
 
-		if (this.bannerClickCount === 7) {
-			this.bannerClickCount = 0;
-			this.showAdminBtn = true;
-		}
-	}
+    if (this.bannerClickCount === 7) {
+      this.bannerClickCount = 0;
+      this.showAdminBtn = true;
+    }
+  }
 
-	isAdminBtnHidden() {
-		return !this.showAdminBtn;
-	}
+  isAdminBtnHidden() {
+    return !this.showAdminBtn;
+  }
 }

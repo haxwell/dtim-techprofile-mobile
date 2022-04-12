@@ -2,18 +2,8 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-
-export const domainInfo = {
-  domain: '174.138.35.62',
-  port: '8080'
-};
-
-export const domainPort = domainInfo.domain + ':' + domainInfo.port;
-
 export const environment = {
-  production: false,
-  domainPort: domainPort,
-  apiUrl: 'http://' + domainPort
+  production: false
 };
 
 /*

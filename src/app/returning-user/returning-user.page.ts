@@ -23,7 +23,7 @@ export class ReturningUserPage implements OnInit {
     }
 
 	ngOnInit() {
-	
+
 	}
 
 	onQueryChange($event) {
@@ -39,15 +39,15 @@ export class ReturningUserPage implements OnInit {
 	}
 
 	onSearchBtnClicked() {
-		let self = this;
+		const self = this;
 
 		self._userService.getUserByEmailOrPhone(self.query).then((user) => {
-			
+
 			if (user) {
-				self._userService.markUserAsAttending(user["id"]).then(() => {
+				self._userService.markUserAsAttending(user['id']).then(() => {
 					self._alertService.show({
 						header: 'Found you!',
-						message: "We found your previous info.<br/><br/>Sweet!<br/><br/> Please hand the tablet to the next person. Thanks!",
+						message: 'We found your previous info.<br/><br/>Sweet!<br/><br/> Please hand the tablet to the next person. Thanks!',
 						buttons: [
 							{
 								text: 'OK', role: 'cancel', handler: () => {
@@ -55,14 +55,14 @@ export class ReturningUserPage implements OnInit {
 								}
 							}
 						]
-					})
-				})
+					});
+				});
 			} else {
 				self._alertService.show({
 					header: 'Hmmm...',
-					message: "Sorry, we couldn't find a profile with that info...<br/><br/>Do you want to create one?",
+					message: 'Sorry, we couldn\'t find a profile with that info...<br/><br/>Do you want to create one?',
 					buttons: [{
-						text: "No, nevermind.",
+						text: 'No, nevermind.',
 						role: 'cancel'
 					}, {
 						text: 'Yes!',
@@ -70,9 +70,9 @@ export class ReturningUserPage implements OnInit {
 					  		this._router.navigate(['/new-user']);
 						}
 					}]
-				})
+				});
 			}
-		})			
+		});
 	}
 
 	onCancelBtnClicked() {

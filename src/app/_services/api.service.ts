@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Events } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ApiService {
-	
+
 	currentUser = {name: 'admin', password: 'admin'};
 
-	constructor(private _http: HttpClient, 
-				private _events: Events, 
+	constructor(private _http: HttpClient,
 				private _platform: Platform) {
 
 	}
@@ -43,7 +41,7 @@ export class ApiService {
 
 	getWithUsernameAndPassword(url: string, uName: string, uPW: string) {
 		let httpHeaders = this.getHeaders(uName, uPW);
-		
+
 		if (this._platform.is('ios'))
 			return this._http.get(url, httpHeaders) // TODO.. figure out how to do this on ios.. was '.timeout(5000);'
 		else
@@ -66,19 +64,19 @@ export class ApiService {
 	}
 
 	postUnsecuredAPI(url: string, data: string) {
-		let httpHeaders: HttpHeaders = new HttpHeaders({}); 
+		let httpHeaders: HttpHeaders = new HttpHeaders({});
 		httpHeaders.set("Content-Type", "application/x-www-form-urlencoded");
 
 		return this._http.post(url + "?" + data, data, { headers: httpHeaders});
 	}
-	
+
 	postUnsecuredAPI2(url: string, data: any) {
-		let httpHeaders: HttpHeaders = new HttpHeaders({}); 
+		let httpHeaders: HttpHeaders = new HttpHeaders({});
 		httpHeaders.set("Content-Type", "application/x-www-form-urlencoded");
 
 		return this._http.post(url, data, { headers: httpHeaders});
 	}
-	
+
 	delete(url: string) {
 		let user = this.currentUser;
 

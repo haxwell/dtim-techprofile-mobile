@@ -5,7 +5,7 @@ export class PhoneValidator {
 
   // Inspired on: https://github.com/yuyang041060120/ng2-validation/blob/master/src/equal-to/validator.ts
   static validCountryPhone = (countryControl: AbstractControl): ValidatorFn => {
-    let subscribe: boolean = false;
+    let subscribe = false;
 
     return (phoneControl: AbstractControl): {[key: string]: boolean} => {
       if (!subscribe) {
@@ -15,13 +15,13 @@ export class PhoneValidator {
         });
       }
 
-      if(phoneControl.value !== ""){
+      if(phoneControl.value !== ''){
         try{
           const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-          let phoneNumber = "" + phoneControl.value + "",
-              region = countryControl.value.iso,
-              number = phoneUtil.parse(phoneNumber, region),
-              isValidNumber = phoneUtil.isValidNumber(number);
+          const phoneNumber = '' + phoneControl.value + '';
+              const region = countryControl.value.iso;
+              const phnumber = phoneUtil.parse(phoneNumber, region);
+              const isValidNumber = phoneUtil.isValidNumber(phnumber);
 
           if(isValidNumber){
             return null;

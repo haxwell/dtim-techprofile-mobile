@@ -33,35 +33,35 @@ export class UserQuestionDetailPage implements OnInit {
 	}
 
 	ngOnInit() {
-		let self = this;
+		const self = this;
 		self._route.params.subscribe((params) => {
-			self.userId = params['userId'];
-			self.questionId = params['questionId'] * 1;
+			self.userId = params.userId;
+			self.questionId = params.questionId * 1;
 
 			self._questionService.getUserHistoryForQuestion(self.userId, self.questionId).then((data) => {
-				console.log("user history for question " + self.questionId)
-				console.log(data)
+				console.log('user history for question ' + self.questionId);
+				console.log(data);
 
 				self.cqgList = data;
-				
-				let sessionNumber = self.getCurrentSessionNumber();
+
+				const sessionNumber = self.getCurrentSessionNumber();
 
 				self.cqgList.forEach((score) => {
-					if (score["sessionId"] === sessionNumber) {
-						self.currentSessionScore = ''+score["grade"];
-						self.currentSessionComment = score["comment"];
+					if (score.sessionId === sessionNumber) {
+						self.currentSessionScore = ''+score.grade;
+						self.currentSessionComment = score.comment;
 					}
-				})
-			})
+				});
+			});
 
 
 			self._userService.getUserById(self.userId).then((data) => {
 				self.user = data;
-			})
+			});
 
 			self._questionService.getQuestionById(self.questionId).then((data) => {
 				self.question = data;
-			})
+			});
 		});
 
 	}
@@ -75,11 +75,11 @@ export class UserQuestionDetailPage implements OnInit {
 	}
 
 	getUserName() {
-		return this.user && this.user["name"];
+		return this.user && this.user.name;
 	}
 
 	getQuestionText() {
-		return this.question && this.question["text"];
+		return this.question && this.question.text;
 	}
 
 	getQuestionId() {
@@ -87,7 +87,7 @@ export class UserQuestionDetailPage implements OnInit {
 	}
 
 	isSessionActive() {
-		return !!this.getCurrentSessionNumber()
+		return !!this.getCurrentSessionNumber();
 	}
 
 	getCurrentSessionQuestionComment() {
@@ -107,11 +107,11 @@ export class UserQuestionDetailPage implements OnInit {
 	}
 
 	onBackBtnClicked() {
-		let self = this;
-		console.log("current sesison score: " + self.currentSessionScore);
+		const self = this;
+		console.log('current sesison score: ' + self.currentSessionScore);
 
 		if (self.isDirty()) {
-			let obj = {score: self.currentSessionScore, comment: self.currentSessionComment};
+			const obj = {score: self.currentSessionScore, comment: self.currentSessionComment};
 
 			self._questionService.setSessionScore(self.userId, self.questionId, self.getCurrentSessionNumber(), obj).then(() =>{
 				self._location.back();
@@ -122,11 +122,11 @@ export class UserQuestionDetailPage implements OnInit {
 	}
 
 	cqgObjectIsForCurrentSession(cqg) {
-		let currentSessionNumber = this.getCurrentSessionNumber();
+		const currentSessionNumber = this.getCurrentSessionNumber();
 		let rtn = false;
 
 		if (currentSessionNumber) {
-			rtn = (cqg["sessionId"] === currentSessionNumber);
+			rtn = (cqg.sessionId === currentSessionNumber);
 		}
 
 		return rtn;

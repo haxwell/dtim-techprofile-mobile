@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { QuestionService } from '../_services/question.service'
-import { TechProfileModelService } from '../_services/tech-profile-model.service'
+import { QuestionService } from '../_services/question.service';
+import { TechProfileModelService } from '../_services/tech-profile-model.service';
 
 @Component({
   selector: 'app-line-item-level-content-page',
@@ -12,7 +12,6 @@ import { TechProfileModelService } from '../_services/tech-profile-model.service
 })
 export class LineItemLevelContentPagePage implements OnInit {
 
-	
 	userId = undefined;
 	lineItemId = undefined;
 	lineItem = undefined;
@@ -28,22 +27,22 @@ export class LineItemLevelContentPagePage implements OnInit {
 	}
 
 	ngOnInit() {
-		let self = this;
+		const self = this;
 		self._route.params.subscribe((params) => {
-			self.userId = params['userId'];
-			self.lineItemId = params['lineItemId'] * 1;
-			self.idx = params['idx'] * 1;
-	
+			self.userId = params.userId;
+			self.lineItemId = params.lineItemId * 1;
+			self.idx = params.idx * 1;
+
 			self._questionService.getByLineItemAndLevel(self.lineItemId, self.idx).then((data) => {
 				self.questions = data;
-			})
+			});
 
 			self.lineItem = self._techProfileModelService.getTechProfileLineItemById(self.lineItemId);
 		});
 	}
 
 	areQuestionsAvailable() {
-		return this.questions != undefined;
+		return !(this.questions === undefined);
 	}
 
 	getQuestions() {
@@ -55,7 +54,7 @@ export class LineItemLevelContentPagePage implements OnInit {
 	}
 
 	onQuestionClicked(q) {
-		this._router.navigate(['/user-question-detail/' + this.userId + '/' + q.id])
+		this._router.navigate(['/user-question-detail/' + this.userId + '/' + q.id]);
 	}
 
 	getLineItemLevel() {
@@ -63,7 +62,7 @@ export class LineItemLevelContentPagePage implements OnInit {
 	}
 
 	getLineItemShortDescription() {
-		return this.lineItem && this.lineItem["l"+this.idx+"Description"].substring(0, 25);
+		return this.lineItem && this.lineItem['l'+this.idx+'Description'].substring(0, 25);
 	}
 
 	getLineItem() {

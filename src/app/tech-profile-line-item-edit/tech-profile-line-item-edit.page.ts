@@ -12,7 +12,7 @@ import { TechProfileModelService } from '../_services/tech-profile-model.service
 export class TechProfileLineItemEditPage implements OnInit {
 
 	dirty = false;
-	lineItem = {id: -1, name: '', l0Description: '', l1Description: '', l2Description: '', l3Description: ''}
+	lineItem = {id: -1, name: '', l0Description: '', l1Description: '', l2Description: '', l3Description: ''};
 
 	constructor(private _location: Location,
 			    private _router: Router,
@@ -22,27 +22,27 @@ export class TechProfileLineItemEditPage implements OnInit {
 	}
 
 	ngOnInit() {
-		let self = this;
+		const self = this;
 
 		self._techProfileModelService._init();
 
 		self._route.params.subscribe((params) => {
-			let lineItemId = params['lineItemId'] * 1;
+			const lineItemId = params.lineItemId * 1;
 
 			if (lineItemId) {
 				self._techProfileModelService.waitingPromise().then(() => {
-					self.lineItem = self._techProfileModelService.getTechProfileLineItemById(lineItemId)
-				})
+					self.lineItem = self._techProfileModelService.getTechProfileLineItemById(lineItemId);
+				});
 			}
-		})
+		});
 	}
 
-	onBackBtnClicked() { 
-		let self = this;
+	onBackBtnClicked() {
+		const self = this;
 		if (self.isDirty()) {
 			self._techProfileModelService.updateTechProfileLineItem(self.lineItem).then((data) => {
 				self._location.back();
-			})
+			});
 		} else {
 			self._location.back();
 		}

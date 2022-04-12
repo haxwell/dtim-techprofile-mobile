@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service'
+import { ApiService } from './api.service';
 
 import { environment } from '../../_environments/environment';
 
@@ -13,29 +13,29 @@ export class UserService {
   }
 
   createNewUser(name, phone, email, password) {
-  	let url = environment.apiUrl + "/api/user/new";
-  	let data = "name=" + name;
+  	const url = environment.apiUrl + '/api/user/new';
+  	let data = 'name=' + name;
 
   	if (phone) {
-  		data += "&phone=" + phone;
+  		data += '&phone=' + phone;
   	}
 
   	if (email) {
-  		data += "&email=" + email;
+  		data += '&email=' + email;
   	}
 
   	if (password) {
-  		data += "&password=" + password;
+  		data += '&password=' + password;
   	}
 
-	let rtn = new Promise(
+	const rtn = new Promise(
 		(resolve, reject) => {
 			this._apiService.postUnsecuredAPI(url, data).subscribe(
-				(data) => { 
-					console.log("New Account Saved!");
-					console.log(data);
+				(_data) => {
+					console.log('New Account Saved!');
+					console.log(_data);
 
-					resolve(data);
+					resolve(_data);
 				}, (err) => {
 					reject(err);
 				});
@@ -45,18 +45,18 @@ export class UserService {
   }
 
   markUserAsAttending(userId) {
-  	let url = environment.apiUrl + "/api/user/" + userId + "/markInAttendance";
+  	const url = environment.apiUrl + '/api/user/' + userId + '/markInAttendance';
 
-  	let data = "userId=" + userId;
+  	const data = 'userId=' + userId;
 
-	let rtn = new Promise(
+	const rtn = new Promise(
 		(resolve, reject) => {
 			this._apiService.postUnsecuredAPI(url, data).subscribe(
-				(data) => { 
-					console.log("User " + userId + " marked in attendance!");
-					console.log(data);
+				(_data) => {
+					console.log('User ' + userId + ' marked in attendance!');
+					console.log(_data);
 
-					resolve(data);
+					resolve(_data);
 				}, (err) => {
 					reject(err);
 				});
@@ -66,16 +66,16 @@ export class UserService {
   }
 
   getUserByEmailOrPhone(query) {
-  	let url = environment.apiUrl + "/api/user?q=" + query;
+  	const url = environment.apiUrl + '/api/user?q=' + query;
 
-	let rtn = new Promise(
+	const rtn = new Promise(
 		(resolve, reject) => {
 			this._apiService.getUnsecuredAPI(url).subscribe(
-				(data) => { 
-					console.log("User query call returned");
-					console.log(data);
+				(_data) => {
+					console.log('User query call returned');
+					console.log(_data);
 
-					resolve(data);
+					resolve(_data);
 				}, (err) => {
 					reject(err);
 				});
@@ -85,16 +85,16 @@ export class UserService {
   }
 
   getUserById(id) {
-  	let url = environment.apiUrl + "/api/user/" + id;
+  	const url = environment.apiUrl + '/api/user/' + id;
 
-	let rtn = new Promise(
+	const rtn = new Promise(
 		(resolve, reject) => {
 			this._apiService.getUnsecuredAPI(url).subscribe(
-				(data) => { 
-					console.log("User by id call returned");
-					console.log(data);
+				(_data) => {
+					console.log('User by id call returned');
+					console.log(_data);
 
-					resolve(data);
+					resolve(_data);
 				}, (err) => {
 					reject(err);
 				});

@@ -20,8 +20,8 @@ export class NewUserPage implements OnInit {
   	phone = undefined;
   	email = undefined;
 
-  	validations_form: FormGroup;  	
-  	country_phone_group: FormGroup;
+  	validationsForm: FormGroup;
+  	countryPhoneGroup: FormGroup;
 
   	countries: Array<CountryPhone>;
 
@@ -34,15 +34,16 @@ export class NewUserPage implements OnInit {
 
     }
 
-	validation_messages = {
-		'name': [
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+	validationMessages = {
+		name: [
 		  { type: 'required', message: 'Name is required.' }
 		],
-		'email': [
+		email: [
 		  { type: 'required', message: 'Email is required.' },
 		  { type: 'pattern', message: 'Please enter a valid email.' }
 		],
-		'phone': [
+		phone: [
 		  { type: 'required', message: 'Phone is required.' },
 		  { type: 'validCountryPhone', message: 'The phone should be ten digits long.' }
 		]
@@ -57,21 +58,21 @@ export class NewUserPage implements OnInit {
 	      new CountryPhone('US', 'United States')
 	    ];
 
-	    let country = new FormControl(this.countries[0], Validators.required);
-	    let phone = new FormControl('', Validators.compose([
+	    const country = new FormControl(this.countries[0], Validators.required);
+	    const phone = new FormControl('', Validators.compose([
 	      PhoneValidator.validCountryPhone(country)
 	    ]));
-	    this.country_phone_group = new FormGroup({
-	      country: country,
-	      phone: phone
+	    this.countryPhoneGroup = new FormGroup({
+	      country,
+	      phone
 	    });
 
-		this.validations_form = this.formBuilder.group({
+		this.validationsForm = this.formBuilder.group({
 		  name: new FormControl('', Validators.required),
 		  email: new FormControl('', Validators.compose([
 		    Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
 		  ])),
-		  country_phone: this.country_phone_group
+		  countryPhone: this.countryPhoneGroup
 		});
 	}
 
@@ -108,32 +109,36 @@ export class NewUserPage implements OnInit {
 		let atLeastOneFieldIsValid = false;
 
 		if (this.phone) {
-			rtn = rtn && this.validations_form.get('country_phone') !== null && (!!this.validations_form.get('country_phone').errors === false) && this.phone.length === 10;
+			rtn = rtn &&
+        this.validationsForm.get('country_phone') !== null &&
+        (!!this.validationsForm.get('country_phone').errors === false) && this.phone.length === 10;
 
-			if (rtn) atLeastOneFieldIsValid = true;
-		} 
+			if (rtn) {atLeastOneFieldIsValid = true;}
+		}
 
 		if (this.email) {
-			rtn = rtn && this.validations_form.get('email') !== null && (!!this.validations_form.get('email').errors === false) && this.email.length > 6
+			rtn = rtn &&
+        this.validationsForm.get('email') !== null &&
+        (!!this.validationsForm.get('email').errors === false) && this.email.length > 6;
 
-			if (rtn) atLeastOneFieldIsValid = true;
+			if (rtn) {atLeastOneFieldIsValid = true;}
 		}
 
 		return rtn && atLeastOneFieldIsValid;
 	}
 
 	onSaveBtnClicked() {
-		console.log("Save Btn Clicked!");
-    	
-    	let self = this;
+		console.log('Save Btn Clicked!');
 
-    	let DEFAULT_PASSWORD = "password11"
+    	const self = this;
+
+    	const DEFAULT_PASSWORD = 'password11';
 
     	self._userService.createNewUser(this.name, this.phone, this.email, DEFAULT_PASSWORD).then((user) => {
-			self._userService.markUserAsAttending(user["id"]).then(() => {
+			self._userService.markUserAsAttending(user['id']).then(() => {
 				self._alertService.show({
 					header: 'You\'re in!',
-					message: "Your profile has been created. Please hand the tablet to the next person. Thanks!",
+					message: 'Your profile has been created. Please hand the tablet to the next person. Thanks!',
 					buttons: [
 						{
 							text: 'OK', role: 'cancel', handler: () => {
@@ -141,13 +146,13 @@ export class NewUserPage implements OnInit {
 							}
 						}
 					]
-				})
-			})
-    	})
+				});
+			});
+    	});
 	}
 
 	onCancelBtnClicked() {
-		console.log("Cancel Btn Clicked!");
+		console.log('Cancel Btn Clicked!');
     	this._router.navigate(['/home']);
 	}
 }
