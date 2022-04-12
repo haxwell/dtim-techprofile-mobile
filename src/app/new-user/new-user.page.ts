@@ -110,8 +110,8 @@ export class NewUserPage implements OnInit {
 
 		if (this.phone) {
 			rtn = rtn &&
-        this.validationsForm.get('country_phone') !== null &&
-        (!!this.validationsForm.get('country_phone').errors === false) && this.phone.length === 10;
+        this.validationsForm.get('countryPhone') !== null &&
+        (!!this.validationsForm.get('countryPhone').errors === false) && this.phone.length === 10;
 
 			if (rtn) {atLeastOneFieldIsValid = true;}
 		}

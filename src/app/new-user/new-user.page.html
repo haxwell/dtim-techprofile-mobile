@@ -43,14 +43,14 @@
 			      </ng-container>
 			    </div>
 
-			    <div formGroupName="country_phone">
+			    <div formGroupName="countryPhone">
 			      <ion-item>
 			        <ion-label position="floating" color="primary">Phone</ion-label>
-					<ion-input data-test="phone-input" type="text" formControlName="phone" (ionInput)="onPhoneChange($event)" [value]="getPhone()" placeholder="{{ validationsForm.value.country_phone.country.sample_phone }}"></ion-input>
+					<ion-input data-test="phone-input" type="text" formControlName="phone" (ionInput)="onPhoneChange($event)" [value]="getPhone()" placeholder="{{ validationsForm.value.countryPhone.country.sample_phone }}"></ion-input>
 			      </ion-item>
 			      <div class="validation-errors">
 			        <ng-container *ngFor="let validation of validationMessages.phone">
-			          <div class="error-message" *ngIf="validationsForm.get('country_phone').get('phone').hasError(validation.type) && (validationsForm.get('country_phone').get('phone').dirty || validationsForm.get('country_phone').get('phone').touched)">
+			          <div class="error-message" *ngIf="validationsForm.get('countryPhone').get('phone').hasError(validation.type) && (validationsForm.get('countryPhone').get('phone').dirty || validationsForm.get('countryPhone').get('phone').touched)">
 			            <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
 			          </div>
 			        </ng-container>
